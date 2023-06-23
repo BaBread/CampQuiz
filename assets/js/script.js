@@ -51,12 +51,11 @@ let questions = [
           choices: [{choice: '1. Do Overnight Modules'}, {choice: '2. Document Object Model'}, {choice: '3. Divas Obviously Model'}, {choice: '4. Do Oo Mo'}]
         },
         { q: 'In jquery, what is the short-hand way to point our javascript code to an id in HTML?', 
-          a: '1. $('')', 
-          choices: [{choice: '1. $('')'}, {choice: '2. .getElementById()'}, {choice: '3. .refHTML'}, {choice: '4. .upperCase'}]
+          a: "1. $('')", 
+          choices: [{choice: "1. $('')"}, {choice: '2. .getElementById()'}, {choice: '3. .refHTML'}, {choice: '4. .upperCase'}]
         },
       ];
 
     //   Since we are using the formatting of putting each div into "containers", we will show and hide them using CSS classes
 
 
-    
