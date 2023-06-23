@@ -1,5 +1,9 @@
 // Define all variables to point to HTML ID's
-
+let startContainer = $('#starter-container')
+let questionContainer = $('question-container')
+let endContainer = $('end-container')
+let highScoreContainer = $('high-score-container')
+let scoreContainer = $('score-banner')
 
 
 
