@@ -25,7 +25,7 @@ let answersEl = $('#answer-buttons')
 let timerEl = $('#timer');
 let score = 0;
 timerEl.text('0');
-let gameOver;
+let gameOver="";
 let timeLeft;
 
 
@@ -73,7 +73,7 @@ let questions = [
 
 // Set timer function for quiz
 let quizStartTime = function() {
-  timeLeft = 80;
+  timeLeft = 10;
 
 
 
@@ -81,7 +81,7 @@ let timerCountDown = setInterval(function () {
   timerEl.text(timeLeft);
   timeLeft--;
 
-  if(gameover) {
+  if(gameOver) {
   clearInterval(timerCountDown)
 
   }
@@ -105,14 +105,46 @@ let startGame = function() {
   questionContainer.addClass('show');
   questionContainer.removeClass('hide');
   arrayShuffleQuestions = questions.sort(() => Math.random()-0.5);
-  quizStartTime
+  quizStartTime()
+  setQuestions()
+
+}
+
+let resetAnswers = function() {
+  while (answersEl.children().length > 0) {
+    answersEl.children().remove();
+
+  }
+
+}
+
+
+
+
+let displayQuestions = function(index) {
+  questionsEl.text(index.q);
+  for (let i=0;i<index.choices.length;i++) {
+    let answerBtn = $('<button></button>');
+    answerBtn.text(index.choices[i].choice);
+    answerBtn.addClass('btn');
+    answerBtn.addClass('answerbtn');
+    answersEl.append(answerBtn);
+
+
+  }
 
 
 }
 
-let displayQuestions = function() {
+let setQuestions = function() {
+  resetAnswers()
+  displayQuestions(arrayShuffleQuestions[initQuestionIndex])
 
+}
+
+let showScore = function (){
 
 
 }
 
+startBtn.on("click", startGame);
