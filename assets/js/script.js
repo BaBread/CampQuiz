@@ -17,6 +17,11 @@ let clearHighScoreBtn = $('#high-score-list');
 
 
 // Define variables to point to questions, answers, timer
+let questionsEl = $('#question');
+let answersEl = $('#answer-buttons')
+
+
+// Define base starting variables like score, time left, game over state
 let timerEl = $('#timer');
 let score = 0;
 timerEl.text('0');
@@ -24,12 +29,8 @@ let gameOver;
 let timeLeft;
 
 
-// Define base starting variables like score, time left, game over state
-
-
-
 // Define an array to store high scores
-
+let highScores = [];
 
 // We will be using an array to shuffle questions
 
@@ -68,4 +69,29 @@ let questions = [
 
     //   Since we are using the formatting of putting each div into "containers", we will show and hide them using CSS classes
 
+
+// Set timer function for quiz
+let quizStartTime = function() {
+  timeLeft = 80;
+
+}
+
+let timerCountDown = setInterval(function () {
+  timerEl.text(timeLeft);
+  timeLeft--;
+
+  if(gameover) {
+  clearInterval(timerCountDown)
+
+  }
+
+  if (timeLeft<0) {
+    showScore()
+    timerEl.text('0')
+    clearInterval(timerCountDown)
+
+
+  }
+
+},1000)
 
