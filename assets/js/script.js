@@ -1,21 +1,27 @@
 // Define all variables to point to HTML ID's
-let startContainer = $('#starter-container')
-let questionContainer = $('question-container')
-let endContainer = $('end-container')
-let highScoreContainer = $('high-score-container')
-let scoreContainer = $('score-banner')
+let startContainer = $('#starter-container');
+let questionContainer = $('#question-container');
+let endContainer = $('#end-container');
+let highScoreContainer = $('#high-score-container');
+let scoreContainer = $('#score-banner');
 
 
 
 
 // Define all variables to point to the buttons of start quiz, go back, and clear high scores
-
+let startBtn = $('#start-game');
+let goBackBtn = $('#go-back');
+let clearHighScoreBtn = $('#high-score-list');
 
 
 
 
 // Define variables to point to questions, answers, timer
-
+let timerEl = $('#timer');
+let score = 0;
+timerEl.text('0');
+let gameOver;
+let timeLeft;
 
 
 // Define base starting variables like score, time left, game over state
