@@ -33,7 +33,8 @@ let timeLeft;
 let highScores = [];
 
 // We will be using an array to shuffle questions
-
+let arrayShuffleQuestions = [];
+let initQuestionIndex = 0;
 
 // the questions will be stored in an array with each index holding the object of question, answer, and choices
 let questions = [
@@ -74,7 +75,7 @@ let questions = [
 let quizStartTime = function() {
   timeLeft = 80;
 
-}
+
 
 let timerCountDown = setInterval(function () {
   timerEl.text(timeLeft);
@@ -94,4 +95,24 @@ let timerCountDown = setInterval(function () {
   }
 
 },1000)
+}
+
+// create function to start the game
+
+let startGame = function() {
+  startContainer.addClass('hide');
+  startContainer.removeClass('show');
+  questionContainer.addClass('show');
+  questionContainer.removeClass('hide');
+  arrayShuffleQuestions = questions.sort(() => Math.random()-0.5);
+  quizStartTime
+
+
+}
+
+let displayQuestions = function() {
+
+
+
+}
 
