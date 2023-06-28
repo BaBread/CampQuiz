@@ -4,8 +4,8 @@ let questionContainer = $('#question-container');
 let endContainer = $('#end-container');
 let highScoreContainer = $('#high-score-container');
 let scoreContainer = $('#score-banner');
-
-
+let correctEl = $('correct')
+let wrongEl = $('wrong')
 
 
 // Define all variables to point to the buttons of start quiz, go back, and clear high scores
@@ -29,7 +29,10 @@ let gameOver="";
 let timeLeft;
 
 
-// Define an array to store high scores
+// Variables associated with highscores and define an array to store high scores
+viewHighScoreEl = $('view-high-scores')
+listHighScoreEl = $('high-score-list')
+initialsFormEl = $('initials-form')
 let highScores = [];
 
 // We will be using an array to shuffle questions
@@ -55,7 +58,7 @@ let questions = [
           choices: [{choice: '1. var function'}, {choice: '2. function'}, {choice: '3. call function'}, {choice: '4. function()'}]
         },
         { q: 'in Git Bash, how do you go up one level in your file directory?', 
-          a: '1. 1995', 
+          a: '1. cd..', 
           choices: [{choice: '1. cd..'}, {choice: '2. ls ..'}, {choice: '3. cd updoot'}, {choice: '4. ^^'}]
         },
         { q: 'What does DOM stand for?', 
@@ -128,6 +131,7 @@ let displayQuestions = function(index) {
     answerBtn.text(index.choices[i].choice);
     answerBtn.addClass('btn');
     answerBtn.addClass('answerbtn');
+    answerBtn.on('click',answerCheck)
     answersEl.append(answerBtn);
 
 
@@ -142,9 +146,64 @@ let setQuestions = function() {
 
 }
 
-let showScore = function (){
+// display for if question is right or wrong
+
+let answerCorrect = function() {
+  correctEl.addClass('banner');
+  correctEl.removeClass('hide');
+  wrongEl.removeClass('banner');
+  wrongEl.addClass('show');
 
 
 }
+
+let answerWrong = function() {
+  wrongEl.addClass('banner');
+  wrongEl.removeClass('hide');
+  correctEl.addClass('hide');
+  correctEl.removeClass('banner');
+}
+
+
+let answerCheck = function(event) {
+  let selectedanswer=event.target;
+  if (arrayShuffleQuestions[initQuestionIndex].a===selectedanswer.text()){
+    answerCorrect();
+    score = score + 10;
+  }
+  else {
+    answerWrong();
+    score = score - 3;
+    timeLeft = timeLeft - 5;
+  }
+
+  initQuestionIndex++
+  if (initquestionInex < arrayShuffleQuestions.length ) {
+    setQuestions();
+  }
+
+  else {
+    gameover = "true";
+    showScore();
+  }
+
+
+}
+
+
+let showScore = function (){
+  questionContainer.addClass('hide');
+  questionContainer.removeClass('show');
+  endContainer.addClass('show');
+  endContainer.removeClass('hide');
+
+  let displayScore = $(<p></p>);
+  displayScore.text('Your score is ' + score + "!")
+  $('score-banner').append(displayScore)
+
+}
+
+
+
 
 startBtn.on("click", startGame);
