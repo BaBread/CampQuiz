@@ -4,8 +4,8 @@ let questionContainer = $('#question-container');
 let endContainer = $('#end-container');
 let highScoreContainer = $('#high-score-container');
 let scoreContainer = $('#score-banner');
-let correctEl = $('correct')
-let wrongEl = $('wrong')
+let correctEl = $('#correct')
+let wrongEl = $('#wrong')
 
 
 // Define all variables to point to the buttons of start quiz, go back, and clear high scores
@@ -30,9 +30,9 @@ let timeLeft;
 
 
 // Variables associated with highscores and define an array to store high scores
-viewHighScoreEl = $('view-high-scores')
-listHighScoreEl = $('high-score-list')
-initialsFormEl = $('initials-form')
+viewHighScoreEl = $('#view-high-scores')
+listHighScoreEl = $('#high-score-list')
+initialsFormEl = $('#initials-form')
 let highScores = [];
 
 // We will be using an array to shuffle questions
@@ -167,7 +167,7 @@ let answerWrong = function() {
 
 let answerCheck = function(event) {
   let selectedanswer=event.target;
-  if (arrayShuffleQuestions[initQuestionIndex].a===selectedanswer.text()){
+  if (arrayShuffleQuestions[initQuestionIndex].a===$(selectedanswer).text()){
     answerCorrect();
     score = score + 10;
   }
@@ -178,7 +178,7 @@ let answerCheck = function(event) {
   }
 
   initQuestionIndex++
-  if (initquestionInex < arrayShuffleQuestions.length ) {
+  if (initQuestionIndex < arrayShuffleQuestions.length ) {
     setQuestions();
   }
 
@@ -197,13 +197,127 @@ let showScore = function (){
   endContainer.addClass('show');
   endContainer.removeClass('hide');
 
-  let displayScore = $(<p></p>);
+  let displayScore = $('<p></p>');
   displayScore.text('Your score is ' + score + "!")
-  $('score-banner').append(displayScore)
+  $('#score-banner').append(displayScore)
+
+}
+
+let createHighScore = function(event) {
+  event.preventDefault();
+  let initials = $('#initials').val();
+  if (!initials) {
+    alert('Enter real inits');
+    return;
+  }
+
+  initialsFormEl.reset();
+  let highScoreObject = {
+    initials: initials,
+    score: score
+
+  }
+
+  highScores.push(highScoreObject)
+  highScores.sort(function(a, b) {
+    return b.score - a.score;
+  });
+
+  while(listHighScoreEl.children().first()) {
+    listHighScoreEl.children().first().remove()
+  }
+
+for (let i=0; i< highScores.length;i++) {
+  let highScoreEl = $('<li></li>')
+  highScoreEl.addClass('high-score')
+  highScoreEl.text(highScores[i].initials + " - " + highScores[i].score)
+  listHighScoreEl.append(highScoreEl)
+}
+
+saveHighScore();
+displayHighScores();
+
+}
+
+let saveHighScore = function(){
+  localStorage.setItem("highScore", JSON.stringify(highScore))
+
+
+}
+
+let loadHighScore = function() {
+  let loadedHighScore = localStorage.getItem('highScore')
+  if (!loadedHighScore) {
+    return false;
+  }
+
+  loadedHighScore = JSON.parse(loadHighScore)
+  loadedHighScore.sort(function(a, b) {
+    return b.score - a.score;
+  });
+
+
+}
+
+let displayHighScores = function() {
+  highScoreContainer.addClass('show');
+  highScoreContainer.removeClass('hide');
+  gameover = "true"
+
+  if (endContainer.hasClass('show')) {
+    endContainer.removeClass('show').addClass('hide');
+  }
+  
+  if (startContainer.hasClass('show')) {
+    startContainer.removeClass('show').addClass('hide');
+  }
+  
+  if (questionContainer.hasClass('show')) {
+    questionContainer.removeClass('show').addClass('hide');
+  }
+  
+  if (correctEl.hasClass('show')) {
+    correctEl.removeClass('show').addClass('hide');
+  }
+  
+  if (wrongEl.hasClass('show')) {
+    wrongEl.removeClass('show').addClass('hide');
+  }
+
+
+}
+
+let clearScores = function{
+  highScores= [];
+
+  while(listHighScoreEl.children().first()){
+    listHighScoreEl.children().first().remove();
+
+  }
+
+
+}
+
+let resetToStart = function() {
+startContainer.addClass('show').removeClass('hide');
+highScoreContainer.addClass('hide').removeClass('show');
+questionContainer.addClass('hide').removeClass('show');
+endContainer.addClass('hide').removeClass('show');
+scoreContainer.addClass('hide').removeClass('show');
+correctEl.addClass('hide').removeClass('show');
+wrongEl.addClass('hide').removeClass('show');
+gameover = "";
+timerEl.text('0');
+score = 0;
+
+
 
 }
 
 
-
-
+loadHighScore()
 startBtn.on("click", startGame);
+initialsFormEl.on('click',createHighScore)
+viewHighScoreEl.on('click',displayHighScores)
+goBackBtn.on('click',resetToStart)
+clearHighScoreBtn.on('click',clearScores)
