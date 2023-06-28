@@ -25,7 +25,7 @@ let answersEl = $('#answer-buttons')
 let timerEl = $('#timer');
 let score = 0;
 timerEl.text('0');
-let gameOver="";
+let gameover="";
 let timeLeft;
 
 
@@ -84,7 +84,7 @@ let timerCountDown = setInterval(function () {
   timerEl.text(timeLeft);
   timeLeft--;
 
-  if(gameOver) {
+  if(gameover) {
   clearInterval(timerCountDown)
 
   }
@@ -211,7 +211,7 @@ let createHighScore = function(event) {
     return;
   }
 
-  initialsFormEl.reset();
+  initialsFormEl.trigger('reset');
   let highScoreObject = {
     initials: initials,
     score: score
@@ -240,7 +240,7 @@ displayHighScores();
 }
 
 let saveHighScore = function(){
-  localStorage.setItem("highScore", JSON.stringify(highScore))
+  localStorage.setItem("highScore", JSON.stringify(highScores))
 
 
 }
@@ -251,10 +251,19 @@ let loadHighScore = function() {
     return false;
   }
 
-  loadedHighScore = JSON.parse(loadHighScore)
+  loadedHighScore = JSON.parse(loadedHighScore)
   loadedHighScore.sort(function(a, b) {
     return b.score - a.score;
   });
+
+  highScores = loadedHighScore
+
+  for (let i=0; i< highScores.length;i++) {
+    let highScoreEl = $('<li></li>')
+    highScoreEl.addClass('high-score')
+    highScoreEl.text(highScores[i].initials + " - " + highScores[i].score)
+    listHighScoreEl.append(highScoreEl)
+  }
 
 
 }
@@ -287,7 +296,7 @@ let displayHighScores = function() {
 
 }
 
-let clearScores = function{
+let clearScores = function() {
   highScores= [];
 
   while(listHighScoreEl.children().first()){
