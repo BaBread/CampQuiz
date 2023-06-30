@@ -30,10 +30,11 @@ let timeLeft;
 
 
 // Variables associated with highscores and define an array to store high scores
-viewHighScoreEl = $('#view-high-scores')
-listHighScoreEl = $('#high-score-list')
-initialsFormEl = $('#initials-form')
+let viewHighScoreEl = $('#view-high-scores')
+let listHighScoreEl = $('#high-score-list')
+let initialsFormEl = $('#initials-form')
 let highScores = [];
+let submitScoreEl = $('#submit-score')
 
 // We will be using an array to shuffle questions
 let arrayShuffleQuestions = [];
@@ -326,7 +327,7 @@ score = 0;
 
 loadHighScore()
 startBtn.on("click", startGame);
-initialsFormEl.on('click',createHighScore)
+submitScoreEl.on('click',createHighScore)
 viewHighScoreEl.on('click',displayHighScores)
 goBackBtn.on('click',resetToStart)
 clearHighScoreBtn.on('click',clearScores)
