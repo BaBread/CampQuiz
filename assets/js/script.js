@@ -11,7 +11,7 @@ let wrongEl = $('#wrong')
 // Define all variables to point to the buttons of start quiz, go back, and clear high scores
 let startBtn = $('#start-game');
 let goBackBtn = $('#go-back');
-let clearHighScoreBtn = $('#high-score-list');
+let clearHighScoreBtn = $('#clear-high-scores');
 
 
 
@@ -124,7 +124,7 @@ let resetAnswers = function() {
 
 
 
-
+// function to hide other containers and show the questions container
 let displayQuestions = function(index) {
   questionsEl.text(index.q);
   for (let i=0;i<index.choices.length;i++) {
@@ -165,7 +165,7 @@ let answerWrong = function() {
   correctEl.removeClass('banner');
 }
 
-
+// function checks if the selected answer matches the answer in the shuffled questions object
 let answerCheck = function(event) {
   let selectedanswer=event.target;
   if (arrayShuffleQuestions[initQuestionIndex].a===$(selectedanswer).text()){
@@ -191,54 +191,58 @@ let answerCheck = function(event) {
 
 }
 
-
+// function shows the score by hiding other containers
 let showScore = function (){
   questionContainer.addClass('hide');
   questionContainer.removeClass('show');
   endContainer.addClass('show');
   endContainer.removeClass('hide');
+  wrongEl.addClass('hide');
+  wrongEl.removeClass('banner');
+  correctEl.addClass('hide');
+  correctEl.removeClass('banner');
 
   let displayScore = $('<p></p>');
   displayScore.text('Your score is ' + score + "!")
   $('#score-banner').append(displayScore)
 
 }
-
+// functions below create the high scores and save to local storage, allowing them to be loaded upon page reload
 let createHighScore = function(event) {
   event.preventDefault();
-  let initials = $('#initials').val();
+  let initials = $("#initials").val();
   if (!initials) {
-    alert('Enter real inits');
+    alert("Enter your initials!");
     return;
   }
 
-  initialsFormEl.trigger('reset');
-  let highScoreObject = {
+  initialsFormEl[0].reset();
+
+  let HighScore = {
     initials: initials,
     score: score
+  };
 
-  }
-
-  highScores.push(highScoreObject)
-  highScores.sort(function(a, b) {
+  // Push and sort scores
+  highScores.push(HighScore);
+  highScores.sort((a, b) => {
     return b.score - a.score;
   });
 
-  while(listHighScoreEl.children().first()) {
-    listHighScoreEl.children().first().remove()
+  // Clear visible list to resort
+  listHighScoreEl.empty();
+
+  // Create elements in order of high scores
+  for (var i = 0; i < highScores.length; i++) {
+    var highscoreEl = $("<li>").addClass("high-score");
+    highscoreEl.html(highScores[i].initials + " - " + highScores[i].score);
+    listHighScoreEl.append(highscoreEl);
   }
 
-for (let i=0; i< highScores.length;i++) {
-  let highScoreEl = $('<li></li>')
-  highScoreEl.addClass('high-score')
-  highScoreEl.text(highScores[i].initials + " - " + highScores[i].score)
-  listHighScoreEl.append(highScoreEl)
-}
+  saveHighScore();
+  displayHighScores();
+};
 
-saveHighScore();
-displayHighScores();
-
-}
 
 let saveHighScore = function(){
   localStorage.setItem("highScore", JSON.stringify(highScores))
@@ -296,18 +300,18 @@ let displayHighScores = function() {
 
 
 }
-
+// clears the scores both on the page and in local storage
 let clearScores = function() {
   highScores= [];
 
-  while(listHighScoreEl.children().first()){
-    listHighScoreEl.children().first().remove();
+  listHighScoreEl.empty();
+  saveHighScore();
 
   }
 
 
-}
 
+// resets the page back to the initial start
 let resetToStart = function() {
 startContainer.addClass('show').removeClass('hide');
 highScoreContainer.addClass('hide').removeClass('show');
@@ -324,7 +328,7 @@ score = 0;
 
 }
 
-
+// loads the stored high scores and holds all the event listeners for the buttons
 loadHighScore()
 startBtn.on("click", startGame);
 submitScoreEl.on('click',createHighScore)
