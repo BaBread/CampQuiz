@@ -27,6 +27,9 @@ Click "View High Scores" to see the current high scores.
 To play again, click "Go Back" to return to the start screen.
 To clear the high scores, click "Clear High Scores".
 
+[Repo](https://github.com/BaBread/CampQuiz)
+[CampQuiz GitPages](https://babread.github.io/CampQuiz/)
+
 
 Screenshots
 Include screenshots or GIFs of your application in action. For example:
